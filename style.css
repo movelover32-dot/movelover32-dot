@@ -1,0 +1,169 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #0b0b0f;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app {
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    padding: 25px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page {
+    width: 100%;
+    display: none;
+    text-align: center;
+}
+
+.page.active {
+    display: block;
+}
+
+h1 {
+    font-size: 52px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+p {
+    color: #a7a7b0;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+button {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #ffffff;
+    color: #0b0b0f;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+button.secondary {
+    background: #202027;
+    color: #ffffff;
+}
+
+button.back {
+    width: auto;
+    background: transparent;
+    color: #aaa;
+    padding: 8px 0;
+    margin: 0 0 25px;
+}
+
+textarea,
+input {
+    width: 100%;
+    border: 1px solid #292932;
+    border-radius: 14px;
+    background: #15151b;
+    color: #ffffff;
+    padding: 16px;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 8px;
+}
+
+textarea {
+    min-height: 150px;
+    resize: none;
+}
+
+textarea:focus,
+input:focus {
+    border-color: #ffffff;
+}
+
+#charCount {
+    text-align: right;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+#createError,
+#answerMessage {
+    color: #ff6b6b;
+    min-height: 20px;
+    margin: 10px 0;
+}
+
+#questionText {
+    background: #15151b;
+    border: 1px solid #292932;
+    border-radius: 18px;
+    padding: 25px 18px;
+    font-size: 21px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.answers {
+    display: flex;
+    gap: 12px;
+}
+
+.answers button {
+    margin-top: 0;
+}
+
+button.green {
+    background: #18c964;
+    color: #ffffff;
+}
+
+button.red {
+    background: #ed4245;
+    color: #ffffff;
+}
+
+#waitingStatus {
+    background: #15151b;
+    border-radius: 15px;
+    padding: 20px;
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+@media (max-width: 380px) {
+    h1 {
+        font-size: 44px;
+    }
+
+    h2 {
+        font-size: 26px;
+    }
+
+    .answers {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedFlag</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="app">
+
+        <section id="homePage" class="page active">
+            <h1>RedFlag</h1>
+            <p>Pose une question. Reçois la réponse.</p>
+
+            <button id="createButton">
+                Poser une question
+            </button>
+
+            <button id="receiveButton" class="secondary">
+                Mes questions
+            </button>
+        </section>
+
+        <section id="createPage" class="page">
+            <button class="back" id="backCreate">← Retour</button>
+
+            <h2>Ta question</h2>
+
+            <textarea
+                id="questionInput"
+                maxlength="300"
+                placeholder="Écris ta question..."
+            ></textarea>
+
+            <p id="charCount">0 / 300</p>
+
+            <input
+                id="receiverInput"
+                type="text"
+                placeholder="Identifiant de la personne"
+            >
+
+            <p id="createError"></p>
+
+            <button id="sendQuestionButton">
+                Envoyer la question
+            </button>
+        </section>
+
+        <section id="waitingPage" class="page">
+            <h2>Question envoyée ✅</h2>
+            <p>
+                La personne recevra ta question.
+                Tu seras prévenu lorsqu'elle répondra.
+            </p>
+
+            <div id="waitingStatus">
+                En attente de réponse...
+            </div>
+
+            <button id="newQuestionButton">
+                Nouvelle question
+            </button>
+        </section>
+
+        <section id="answerPage" class="page">
+            <h2>On te pose une question 👀</h2>
+
+            <div id="questionText"></div>
+
+            <div class="answers">
+                <button id="greenButton" class="green">
+                    🟢 GREEN FLAG
+                </button>
+
+                <button id="redButton" class="red">
+                    🔴 RED FLAG
+                </button>
+            </div>
+
+            <p id="answerMessage"></p>
+        </section>
+
+        <section id="donePage" class="page">
+            <h2>Réponse envoyée ✅</h2>
+            <p>
+                La personne qui a posé la question
+                sera prévenue.
+            </p>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
