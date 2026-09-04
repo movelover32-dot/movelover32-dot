@@ -174,6 +174,29 @@ async function loadQuestions() {
     .map((q) => {
       const answer = answerMap[q.id];
 
+      const statusHtml =
+        q.status === "red"
+          ? '<div class="flagStatus red">🔴 RED FLAG</div>'
+          : q.status === "green"
+          ? '<div class="flagStatus green">🟢 GREEN FLAG</div>'
+          : `
+              <div class="flagButtons">
+                <button
+                  class="flagBtn redFlagBtn"
+                  onclick="setQuestionStatus('${q.id}', 'red')"
+                >
+                  🔴 Red Flag
+                </button>
+
+                <button
+                  class="flagBtn greenFlagBtn"
+                  onclick="setQuestionStatus('${q.id}', 'green')"
+                >
+                  🟢 Green Flag
+                </button>
+              </div>
+            `;
+
       return `
         <article class="questionCard">
           <div class="questionText">${escapeHtml(q.question)}</div>
@@ -181,6 +204,8 @@ async function loadQuestions() {
           <div class="meta">
             ${formatDate(q.created_at)}
           </div>
+
+          ${statusHtml}
 
           ${
             answer
@@ -221,6 +246,33 @@ async function loadQuestions() {
     })
     .join("");
 }
+
+window.setQuestionStatus = async function (questionId, status) {
+  try {
+    const { data: sessionData } =
+      await client.auth.getSession();
+
+    if (!sessionData.session) {
+      throw new Error("Session expirée.");
+    }
+
+    const { error } = await client
+      .from("questions")
+      .update({ status })
+      .eq("id", questionId);
+
+    if (error) throw error;
+
+    await loadQuestions();
+
+  } catch (error) {
+    console.error(error);
+    alert(
+      error.message ||
+      "Impossible de modifier le statut."
+    );
+  }
+};
 
 window.answerQuestion = async function (questionId) {
   const textarea = document.getElementById(

@@ -333,3 +333,63 @@ footer {
     width: 100%;
   }
 }
+
+.flagButtons {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.flagBtn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  background: transparent;
+}
+
+.redFlagBtn {
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
+.redFlagBtn:hover {
+  background: rgba(255, 51, 71, .12);
+}
+
+.greenFlagBtn {
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+
+.greenFlagBtn:hover {
+  background: rgba(57, 217, 138, .12);
+}
+
+.flagStatus {
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 13px;
+  margin: 12px 0;
+}
+
+.flagStatus.red {
+  color: var(--red);
+  background: rgba(255, 51, 71, .10);
+  border: 1px solid rgba(255, 51, 71, .25);
+}
+
+.flagStatus.green {
+  color: var(--green);
+  background: rgba(57, 217, 138, .10);
+  border: 1px solid rgba(57, 217, 138, .25);
+}
+
+@media (max-width: 600px) {
+  .flagButtons {
+    flex-direction: column;
+  }
+}
+
