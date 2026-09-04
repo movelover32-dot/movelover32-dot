@@ -1,0 +1,10 @@
+{
+  "name": "RedFlag",
+  "short_name": "RedFlag",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#09090c",
+  "theme_color": "#ff3347",
+  "description": "Questions anonymes avec RedFlag.",
+  "icons": []
+}

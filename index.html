@@ -1,100 +1,126 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RedFlag</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0f">
+  <meta name="description" content="RedFlag — pose des questions anonymes.">
+  <title>RedFlag</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <div class="app">
 
-    <main class="app">
+    <header class="topbar">
+      <div class="logo">Red<span>Flag</span></div>
+      <button id="logoutBtn" class="ghost hidden">Déconnexion</button>
+    </header>
 
-        <section id="homePage" class="page active">
-            <h1>RedFlag</h1>
-            <p>Pose une question. Reçois la réponse.</p>
+    <main>
 
-            <button id="createButton">
-                Poser une question
+      <!-- AUTH -->
+      <section id="authPage" class="page">
+        <div class="hero">
+          <div class="badge">ANONYME • SIMPLE • PRIVÉ</div>
+          <h1>Pose la question.<br><span>Sans révéler ton nom.</span></h1>
+          <p>Crée ton profil RedFlag et reçois des questions anonymes.</p>
+        </div>
+
+        <div class="card">
+          <div class="tabs">
+            <button id="loginTab" class="tab active">Connexion</button>
+            <button id="signupTab" class="tab">Inscription</button>
+          </div>
+
+          <form id="authForm">
+            <input id="email" type="email" placeholder="Ton adresse e-mail" required>
+            <input id="password" type="password" placeholder="Mot de passe" minlength="6" required>
+
+            <button id="authBtn" class="primary" type="submit">
+              Se connecter
             </button>
+          </form>
 
-            <button id="receiveButton" class="secondary">
-                Mes questions
-            </button>
-        </section>
+          <p id="authMessage" class="message"></p>
+        </div>
+      </section>
 
-        <section id="createPage" class="page">
-            <button class="back" id="backCreate">← Retour</button>
+      <!-- DASHBOARD -->
+      <section id="dashboardPage" class="page hidden">
+        <div class="dashboardHead">
+          <div>
+            <div class="badge">TON ESPACE</div>
+            <h2>Ta boîte RedFlag</h2>
+            <p>Les questions que tu reçois apparaîtront ici.</p>
+          </div>
+        </div>
 
-            <h2>Ta question</h2>
+        <div class="shareCard">
+          <span>Ton lien public</span>
+          <div class="linkRow">
+            <input id="publicLink" readonly>
+            <button id="copyBtn" class="secondary">Copier</button>
+          </div>
+          <button id="shareBtn" class="primary">Partager mon lien</button>
+        </div>
 
-            <textarea
-                id="questionInput"
-                maxlength="300"
-                placeholder="Écris ta question..."
-            ></textarea>
+        <div class="inboxHeader">
+          <h3>Questions reçues</h3>
+          <button id="refreshBtn" class="ghost">Actualiser</button>
+        </div>
 
-            <p id="charCount">0 / 300</p>
+        <div id="questionsList"></div>
+      </section>
 
-            <input
-                id="receiverInput"
-                type="text"
-                placeholder="Identifiant de la personne"
-            >
+      <!-- PUBLIC PROFILE -->
+      <section id="publicPage" class="page hidden">
+        <div class="publicHero">
+          <div class="avatar">R</div>
+          <div class="badge">QUESTION ANONYME</div>
+          <h1>Pose ta question.</h1>
+          <p>Ton identité ne sera pas affichée au destinataire.</p>
+        </div>
 
-            <p id="createError"></p>
+        <div class="card">
+          <form id="questionForm">
+            <textarea id="questionText" maxlength="1000"
+              placeholder="Écris ta question ici..." required></textarea>
 
-            <button id="sendQuestionButton">
-                Envoyer la question
-            </button>
-        </section>
-
-        <section id="waitingPage" class="page">
-            <h2>Question envoyée ✅</h2>
-            <p>
-                La personne recevra ta question.
-                Tu seras prévenu lorsqu'elle répondra.
-            </p>
-
-            <div id="waitingStatus">
-                En attente de réponse...
+            <div class="counter">
+              <span>Question</span>
+              <span id="questionCounter">0 / 1000</span>
             </div>
 
-            <button id="newQuestionButton">
-                Nouvelle question
+            <button class="primary" type="submit">
+              Envoyer anonymement
             </button>
-        </section>
+          </form>
 
-        <section id="answerPage" class="page">
-            <h2>On te pose une question 👀</h2>
+          <p id="questionMessage" class="message"></p>
+        </div>
 
-            <div id="questionText"></div>
-
-            <div class="answers">
-                <button id="greenButton" class="green">
-                    🟢 GREEN FLAG
-                </button>
-
-                <button id="redButton" class="red">
-                    🔴 RED FLAG
-                </button>
-            </div>
-
-            <p id="answerMessage"></p>
-        </section>
-
-        <section id="donePage" class="page">
-            <h2>Réponse envoyée ✅</h2>
-            <p>
-                La personne qui a posé la question
-                sera prévenue.
-            </p>
-        </section>
+        <div id="notificationBox" class="notificationBox hidden">
+          <h3>🔔 Être averti de la réponse</h3>
+          <p>Autorise les notifications pour recevoir une alerte si la personne répond.</p>
+          <button id="notificationBtn" class="secondary">
+            Activer les notifications
+          </button>
+          <p id="notificationMessage" class="message"></p>
+        </div>
+      </section>
 
     </main>
 
-    <script src="script.js"></script>
+    <footer>
+      <span>RedFlag</span>
+      <span>Questions anonymes</span>
+    </footer>
 
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
 </body>
 </html>
