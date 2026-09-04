@@ -333,6 +333,36 @@ window.answerQuestion = async function (questionId) {
   }
 };
 
+window.setQuestionStatus = async function (questionId, status) {
+  try {
+    const {
+      data: { session }
+    } = await client.auth.getSession();
+
+    if (!session) {
+      alert("Session expirée. Reconnecte-toi.");
+      return;
+    }
+
+    const { error } = await client
+      .from("questions")
+      .update({ status: status })
+      .eq("id", questionId);
+
+    if (error) {
+      console.error("Erreur statut :", error);
+      alert("Impossible d'enregistrer le statut : " + error.message);
+      return;
+    }
+
+    await loadQuestions();
+
+  } catch (error) {
+    console.error("Erreur statut :", error);
+    alert("Erreur : " + error.message);
+  }
+};
+
 async function openDashboard(user) {
   currentUser = user;
 
