@@ -172,8 +172,6 @@ async function loadQuestions() {
 
     const answer = answerMap[q.id];
     const status = String(q.status || "pending").trim().toLowerCase();
-      .trim()
-      .toLowerCase();
 
     let flagHtml = "";
 
