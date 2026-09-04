@@ -351,7 +351,7 @@ window.setQuestionStatus = async function (questionId, status) {
 
     if (error) {
       console.error("Erreur statut :", error);
-      alert("Impossible d'enregistrer le statut : " + error.message);
+      alert("ERREUR SUPABASE : " + error.message + "\nCode : " + (error.code || "inconnu"));
       return;
     }
 
