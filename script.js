@@ -143,15 +143,13 @@ async function loadQuestions() {
     .order("created_at", { ascending: false });
 
   if (error) {
+    console.error(error);
     questionsList.innerHTML = "";
-    message(
-      authMessage,
-      "Impossible de charger les questions."
-    );
+    message(authMessage, "Impossible de charger les questions.");
     return;
   }
 
-  if (!questions.length) {
+  if (!questions || !questions.length) {
     questionsList.innerHTML =
       '<p class="message">Aucune question pour le moment.</p>';
     return;
@@ -170,111 +168,96 @@ async function loadQuestions() {
     answerMap[answer.question_id] = answer;
   });
 
-  questionsList.innerHTML = questions
-    .map((q) => {
-      const answer = answerMap[q.id];
+  questionsList.innerHTML = questions.map((q) => {
 
-      const statusHtml =
-        q.status === "red"
-          ? '<div class="flagStatus red">🔴 RED FLAG</div>'
-          : q.status === "green"
-          ? '<div class="flagStatus green">🟢 GREEN FLAG</div>'
-          : `
-              <div class="flagButtons">
-                <button
-                  class="flagBtn redFlagBtn"
-                  onclick="setQuestionStatus('${q.id}', 'red')"
-                >
-                  🔴 Red Flag
-                </button>
+    const answer = answerMap[q.id];
+    const status = String(q.status || "pending")
+      .trim()
+      .toLowerCase();
 
-                <button
-                  class="flagBtn greenFlagBtn"
-                  onclick="setQuestionStatus('${q.id}', 'green')"
-                >
-                  🟢 Green Flag
-                </button>
-              </div>
-            `;
+    let flagHtml = "";
 
-      return `
-        <article class="questionCard">
-          <div class="questionText">${escapeHtml(q.question)}</div>
+    if (status === "red") {
+      flagHtml =
+        '<div class="flagStatus red">🔴 RED FLAG</div>';
+    } else if (status === "green") {
+      flagHtml =
+        '<div class="flagStatus green">🟢 GREEN FLAG</div>';
+    } else {
+      flagHtml = `
+        <div class="flagButtons">
+          <button
+            type="button"
+            class="flagBtn redFlagBtn"
+            onclick="setQuestionStatus('${q.id}', 'red')"
+          >
+            🔴 Red Flag
+          </button>
 
-          <div class="meta">
-            ${formatDate(q.created_at)}
-          </div>
-
-          ${statusHtml}
-
-          ${statusHtml}
-
-          ${
-            answer
-              ? `
-                <div class="status">✓ Répondue</div>
-                <div class="answer">
-                  ${escapeHtml(answer.answer)}
-                </div>
-              `
-              : `
-                <div class="status" style="color:#ffcc66;">
-                  • En attente de réponse
-                </div>
-
-                <div class="answer">
-                  <textarea
-                    id="answer-${q.id}"
-                    maxlength="5000"
-                    placeholder="Écris ta réponse..."
-                  ></textarea>
-
-                  <button
-                    class="primary"
-                    onclick="answerQuestion('${q.id}')"
-                  >
-                    Répondre
-                  </button>
-
-                  <p
-                    id="answer-message-${q.id}"
-                    class="message"
-                  ></p>
-                </div>
-              `
-          }
-        </article>
+          <button
+            type="button"
+            class="flagBtn greenFlagBtn"
+            onclick="setQuestionStatus('${q.id}', 'green')"
+          >
+            🟢 Green Flag
+          </button>
+        </div>
       `;
-    })
-    .join("");
-}
-
-window.setQuestionStatus = async function (questionId, status) {
-  try {
-    const { data: sessionData } =
-      await client.auth.getSession();
-
-    if (!sessionData.session) {
-      throw new Error("Session expirée.");
     }
 
-    const { error } = await client
-      .from("questions")
-      .update({ status })
-      .eq("id", questionId);
+    return `
+      <article class="questionCard">
 
-    if (error) throw error;
+        <div class="questionText">
+          ${escapeHtml(q.question)}
+        </div>
 
-    await loadQuestions();
+        <div class="meta">
+          ${formatDate(q.created_at)}
+        </div>
 
-  } catch (error) {
-    console.error(error);
-    alert(
-      error.message ||
-      "Impossible de modifier le statut."
-    );
-  }
-};
+        ${flagHtml}
+
+        ${
+          answer
+            ? `
+              <div class="status">✓ Répondue</div>
+
+              <div class="answer">
+                ${escapeHtml(answer.answer)}
+              </div>
+            `
+            : `
+              <div class="status" style="color:#ffcc66;">
+                • En attente de réponse
+              </div>
+
+              <div class="answer">
+                <textarea
+                  id="answer-${q.id}"
+                  maxlength="5000"
+                  placeholder="Écris ta réponse..."
+                ></textarea>
+
+                <button
+                  class="primary"
+                  onclick="answerQuestion('${q.id}')"
+                >
+                  Répondre
+                </button>
+
+                <p
+                  id="answer-message-${q.id}"
+                  class="message"
+                ></p>
+              </div>
+            `
+        }
+
+      </article>
+    `;
+  }).join("");
+}
 
 window.answerQuestion = async function (questionId) {
   const textarea = document.getElementById(
