@@ -171,7 +171,7 @@ async function loadQuestions() {
   questionsList.innerHTML = questions.map((q) => {
 
     const answer = answerMap[q.id];
-    const status = String(q.status || "pending")
+    const status = "pending"; // TEST BOUTONS
       .trim()
       .toLowerCase();
 
