@@ -293,32 +293,22 @@ window.answerQuestion = async function (questionId) {
       throw new Error("Session expirée.");
     }
 
-    const { data, error } =
-      await client.functions.invoke(
-        "send-answer-push",
-        {
-          body: {
-            question_id: questionId,
-            answer
-          }
-        }
-      );
+    const { error } = await client
+      .from("answers")
+      .insert({
+        question_id: questionId,
+        answer: answer
+      });
 
     if (error) throw error;
 
-    if (data?.success) {
-      message(
-        msg,
-        "Réponse envoyée !",
-        true
-      );
+    message(
+      msg,
+      "Réponse envoyée !",
+      true
+    );
 
-      setTimeout(loadQuestions, 500);
-    } else {
-      throw new Error(
-        data?.error || "Erreur pendant l'envoi."
-      );
-    }
+    setTimeout(loadQuestions, 500);
   } catch (error) {
     console.error(error);
 
