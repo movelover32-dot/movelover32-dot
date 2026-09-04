@@ -207,6 +207,8 @@ async function loadQuestions() {
 
           ${statusHtml}
 
+          ${statusHtml}
+
           ${
             answer
               ? `
