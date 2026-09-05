@@ -300,6 +300,13 @@ window.answerQuestion = async function (questionId) {
 
     if (error) throw error;
 
+    await client.functions.invoke("send-answer-push", {
+      body: {
+        question_id: questionId,
+        answer: answer
+      }
+    });
+
     message(
       msg,
       "Réponse envoyée !",
