@@ -683,7 +683,15 @@ notificationBtn.addEventListener("click", async () => {
         "./sw.js"
       );
 
-    const subscription =
+    let subscription =
+      await registration.pushManager.getSubscription();
+
+    if (subscription) {
+      await subscription.unsubscribe();
+      subscription = null;
+    }
+
+    subscription =
       await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(
