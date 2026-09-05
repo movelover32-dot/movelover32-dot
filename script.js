@@ -300,12 +300,22 @@ window.answerQuestion = async function (questionId) {
 
     if (error) throw error;
 
-    await client.functions.invoke("send-answer-push", {
-      body: {
-        question_id: questionId,
-        answer: answer
-      }
-    });
+    const { error: pushError } =
+      await client.functions.invoke("send-answer-push", {
+        body: {
+          question_id: questionId,
+          answer: answer
+        }
+      });
+
+    if (pushError) {
+      console.error("Erreur notification :", pushError);
+      message(
+        msg,
+        "Réponse envoyée, mais notification impossible.",
+        true
+      );
+    }
 
     message(
       msg,
