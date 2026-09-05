@@ -678,6 +678,14 @@ notificationBtn.addEventListener("click", async () => {
       );
     }
 
+    const oldSubscription =
+      await navigator.serviceWorker.ready
+        .then(reg => reg.pushManager.getSubscription());
+
+    if (oldSubscription) {
+      await oldSubscription.unsubscribe();
+    }
+
     const registration =
       await navigator.serviceWorker.register(
         "./sw.js"
