@@ -2,7 +2,7 @@ const SUPABASE_URL = "https://tevzumwqjzerablqfamu.supabase.co";
 const SUPABASE_KEY = "sb_publishable_RTavC98pqDPvU2VlIdb4GQ_LA8uo341";
 
 const VAPID_PUBLIC_KEY =
-  "BKabYneyxGXb0Z2vkjOtS00NlwcOfYjxGzBaYZSk76hIXG29pkYva_1NKG5xGsh5bSo415fi1nar4AIS7AEH1vc";
+  "BCh1L7kzqC45jjF2CvRDaHUhSQHBtdIffQxt5D8nudIhagJicEvwdlzhHC6H4qCmRPpGzgPlCYuCWLLXysHyl9Q";
 
 const SITE_URL =
   "https://movelover32-dot.github.io/movelover32-dot/";
